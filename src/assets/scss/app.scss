@@ -1,0 +1,12 @@
+@import "bootstrap/scss/bootstrap";
+
+.completed {
+	font-style: italic;
+	text-decoration: line-through;
+	color: $gray-800;
+}
+
+#todos {
+	background-color: $gray-500;
+	padding: 2rem;
+}
