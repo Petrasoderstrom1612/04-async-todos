@@ -51,8 +51,11 @@ const fetchTodos = async () => {
 	
 }
 
+interface ApiResponse{
+	data: string;
+}
 
-const saveTodos = async (newTodo: Todo) => {
+const saveTodos = async (newTodo: Todo): Promise<ApiResponse> => {
 		try {
 		const res = await fetch("http://localhost:3000/todos",{
 			method: "POST",
