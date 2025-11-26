@@ -38,7 +38,11 @@ let todos: Todo[] = [
 
 let todos: Todo[] = [];
 
-const fetchTodos = async () => {
+interface ApiResponse{
+	data: string;
+}
+
+const fetchTodos = async (): Promise<ApiResponse> => {
 	try {
 		const res = await fetch("http://localhost:3000/todos")
 		const data = await res.json()
@@ -49,10 +53,6 @@ const fetchTodos = async () => {
 		throw Error(`error: ${error}`)
 	}
 	
-}
-
-interface ApiResponse{
-	data: string;
 }
 
 const saveTodos = async (newTodo: Todo): Promise<ApiResponse> => {
