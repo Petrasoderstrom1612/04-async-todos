@@ -1,9 +1,15 @@
 import "./assets/scss/app.scss";
+// import {fetchTodos} from "./services/TodosApi";
 
 //DOM references
 const todosEl = document.querySelector<HTMLUListElement>("#todos")!;
 const newTodoFormEl = document.querySelector<HTMLFormElement>("#new-todo-form")!;
 const newTodoTitleEl = document.querySelector<HTMLInputElement>("#new-todo-title")!;
+
+console.log("Environment variables:", import.meta.env);
+const BASE_URL = import.meta.env.BASE_URL;
+console.log(BASE_URL)
+
 
 // Initial state
 interface Todo {
@@ -38,14 +44,13 @@ let todos: Todo[] = [
 
 let todos: Todo[] = [];
 
-
 const fetchTodos = async () => {
 	try {
 		const res = await fetch("http://localhost:3000/todos")
-		const data = await res.json()
+		const data = await res.json() as Todo[];
 		console.log("data", data)
 		todos = data
-		return data as Todo[];
+		return data
 	} catch (error){
 		throw Error(`error: ${error}`)
 	}
