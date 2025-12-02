@@ -69,7 +69,7 @@ const saveTodos = async (newTodo: Todo) => {
 		return data
 
 	} catch (error){
-		throw Error(`error: ${error}`)
+		throw new Error(`error: ${error}`)
 	}
 	
 }
@@ -98,7 +98,7 @@ const renderTodos = async () => {
 
 //List for new todo form being submitted
 
-newTodoFormEl.addEventListener("submit", (e) => {
+newTodoFormEl.addEventListener("submit", async (e) => {
 	e.preventDefault();
 
 	const newTodoTitle = newTodoTitleEl.value.trim();
@@ -123,10 +123,10 @@ newTodoFormEl.addEventListener("submit", (e) => {
 	console.log(todos)
 
 	// Save todos 🏊‍♀️🛟
-	saveTodos(newTodo);
+	await saveTodos(newTodo);
 
 	// Re-render todos
-	renderTodos();
+	await renderTodos();
 
 	// Clear input field
 	newTodoTitleEl.value = "";
