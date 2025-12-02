@@ -1,5 +1,7 @@
 import "./assets/scss/app.scss";
-// import {fetchTodos} from "./services/TodosApi";
+import {fetchTodos} from "./services/TodosApi";
+import type {Todo } from "./services/Types";
+import {todos} from "./services/TodosApi";
 
 //DOM references
 const todosEl = document.querySelector<HTMLUListElement>("#todos")!;
@@ -10,52 +12,6 @@ console.log("Environment variables:", import.meta.env);
 const BASE_URL = import.meta.env.BASE_URL;
 console.log(BASE_URL)
 
-
-// Initial state
-interface Todo {
-	id: number;
-	title: string;
-	completed: boolean;
-}
-
-// // Get JSON of Todos from localStorage
-// const jsonTodos = localStorage.getItem("todos") ?? "[]";
-
-// // Parse JSON into something we can use in JavaScript
-// let todos: Todo[] = JSON.parse(jsonTodos);
-
-// //Save todos to localStorage
-// const saveTodos = () => {
-// 	// Convert todos-array to JSON
-// 	const jsonTodos = JSON.stringify(todos);
-
-// 	// Save JSON to localStorage
-// 	localStorage.setItem("todos", jsonTodos);
-// }
-
-/*
-let todos: Todo[] = [
-	{ id: 1, title: "🤓 Learn about TypeScript", completed: true },
-	{ id: 2, title: "😇 Take over the world", completed: false },
-	{ id: 3, title: "💰 Profit", completed: false },
-	{ id: 4, title: "😈 Be nice", completed: true },
-];
-*/
-
-let todos: Todo[] = [];
-
-const fetchTodos = async () => {
-	try {
-		const res = await fetch("http://localhost:3000/todos")
-		const data = await res.json() as Todo[];
-		console.log("data", data)
-		todos = data
-		return data
-	} catch (error){
-		throw Error(`error: ${error}`)
-	}
-	
-}
 
 const saveTodos = async (newTodo: Todo) => {
 		try {
@@ -74,12 +30,15 @@ const saveTodos = async (newTodo: Todo) => {
 	
 }
 
+const fetchTodosAndRender = async () => {
+	await fetchTodos()
+	renderTodos()
+}
 
 
 
 //Render todos to DOM
-const renderTodos = async () => {
-	await fetchTodos()
+const renderTodos = () => {
 	todosEl.innerHTML = todos
 		.map(todo => {
 			return `<li class="list-group-item d-flex justify-content-between align-items-center">
@@ -126,7 +85,7 @@ newTodoFormEl.addEventListener("submit", async (e) => {
 	await saveTodos(newTodo);
 
 	// Re-render todos
-	await renderTodos();
+	fetchTodosAndRender();
 
 	// Clear input field
 	newTodoTitleEl.value = "";
@@ -135,4 +94,4 @@ newTodoFormEl.addEventListener("submit", async (e) => {
 });
 
 // Render initial list of todos
-renderTodos();
+fetchTodosAndRender();
