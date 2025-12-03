@@ -57,13 +57,17 @@ todosEl.addEventListener("click", async (e) => { //no need to declare e, typescr
 		await updateTodo(clickedId, {completed : !clickedTodo.completed});
 	}
 	if (target.dataset.action === "edit") {
-		const titleEl = document.querySelector(".todo-title") as HTMLElement;
-		const currentTitle = titleEl.textContent;
-		const newTitle = prompt("Edit title", currentTitle)
+		// const titleEl = document.querySelector(".todo-title") as HTMLElement;
+		// const currentTitle = titleEl.textContent;
+		// const newTitle = prompt("Edit title", currentTitle)
 
-		if (newTitle && newTitle !== ""){
-			await updateTodo(clickedId, {title: newTitle});
-		}
+		// if (newTitle && newTitle !== ""){
+		// 	await updateTodo(clickedId, {title: newTitle});
+		// }
+
+		const title = prompt("Todo text", clickedTodo.title)
+		if(!title) return
+			await updateTodo(clickedId, {title: title});
 	}
     await fetchTodosAndRender();
 });
