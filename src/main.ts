@@ -31,7 +31,7 @@ const renderTodos = () => {
 				</span>
 				<span class="todo-actions">
 					<button class="btn btn-warning">Edit</button>
-					<button class="btn btn-danger delete-btn">Delete</button>
+					<button class="btn btn-danger">Delete</button>
 				</span>
 			</li>`;
 		})

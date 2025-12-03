@@ -72,6 +72,7 @@ export const deleteTodo = async(event: MouseEvent) => {
 
     console.log(li.dataset.todoId)
     const oneObjId = li.dataset.todoId
+    if(!li.dataset.todoId) return //if I had several li's
 
 
     try {
