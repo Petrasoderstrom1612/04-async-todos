@@ -70,7 +70,7 @@ export const deleteTodo = async(event: MouseEvent) => {
     const li = target.closest("li")
     if(!li) return;
 
-    console.log(li.dataset.todoId)
+    console.log("id from the click", li.dataset.todoId)
     const oneObjId = li.dataset.todoId
     if(!li.dataset.todoId) return //if I had several li's
 
