@@ -2,7 +2,7 @@
   "todos": [
     {
       "title": "jjjjjfff",
-      "completed": false,
+      "completed": true,
       "id": 3
     },
     {
@@ -12,7 +12,7 @@
     },
     {
       "title": "ssss",
-      "completed": false,
+      "completed": true,
       "id": 6
     },
     {

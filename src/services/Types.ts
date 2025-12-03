@@ -13,3 +13,4 @@ export interface Todo {
 export type CreateTodoPayload = Omit<Todo, "id"> //create a same type based on interface but without one property
 
 
+export type UpdateTodoPayload = Partial<CreateTodoPayload>

@@ -1,4 +1,4 @@
-import type{ Todo, CreateTodoPayload} from "./Types"
+import type{ Todo, CreateTodoPayload, UpdateTodoPayload} from "./Types"
 
 import axios from "axios";
 
@@ -92,49 +92,55 @@ export const deleteTodo = async(oneObjId: number) => {
 }
 
 
-const fetchOneTodo = async (oneObjId: number) => {
-    try {
-    const res = await fetch(`${BASE_URL}/todos/${oneObjId}`) //denna startar hämtningen och ger mig ett löfte om att återkomma med en respons(uppfyld eller bruten)
+// const fetchOneTodo = async (oneObjId: number) => {
+//     try {
+//     const res = await fetch(`${BASE_URL}/todos/${oneObjId}`) //denna startar hämtningen och ger mig ett löfte om att återkomma med en respons(uppfyld eller bruten)
 
-    if (!res.ok) {
-    throw new Error(`HTTP error! status: ${res.status}`);
-    }
+//     if (!res.ok) {
+//     throw new Error(`HTTP error! status: ${res.status}`);
+//     }
 
-    const data = await res.json() as Todo; //needed as Typescript does not read 5 when fetching, it will assign any
-    console.log("data", data)
+//     const data = await res.json() as Todo; //needed as Typescript does not read 5 when fetching, it will assign any
+//     console.log("data", data)
 
-    return data
-	} catch (error){
-		throw Error(`error: ${error}`)
-	}	
+//     return data
+// 	} catch (error){
+// 		throw Error(`error: ${error}`)
+// 	}	
 
+// }
+
+export const updateTodo = async(oneObjId: number, updates: UpdateTodoPayload) => {
+    const res = await axios.patch<Todo>(`${BASE_URL}/todos/${oneObjId}`, updates) //<Todo> ensures your promise is not any
+    console.log("AXIOS PATCH DATA:", res.data);
+    return res.data;
 }
 
-export const updateTodo = async(oneObjId: number, updates: Partial<Todo>) => {
+// export const updateTodo = async(oneObjId: number, updates: UpdateTodoPayload) => {
 
-    if(oneObjId){
-        const editedTodo = await fetchOneTodo(oneObjId)
-        console.log("editedTodo", editedTodo)
-        try {
-        const res = await fetch(`${BASE_URL}/todos/${oneObjId}`,{
-            method: "PATCH",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(updates)
-        })
+//     if(oneObjId){
+//         const editedTodo = await fetchOneTodo(oneObjId)
+//         console.log("editedTodo", editedTodo)
+//         try {
+//         const res = await fetch(`${BASE_URL}/todos/${oneObjId}`,{
+//             method: "PATCH",
+//             headers: { "Content-Type": "application/json" },
+//             body: JSON.stringify(updates)
+//         })
         
-        if (!res.ok) {
-        throw new Error(`HTTP error! status: ${res.status}`);
-        }
+//         if (!res.ok) {
+//         throw new Error(`HTTP error! status: ${res.status}`);
+//         }
     
-        const data = await res.json() as Todo[];
-        console.log("edited data", data)
-        return data
+//         const data = await res.json() as Todo[];
+//         console.log("edited data", data)
+//         return data
     
-        } catch (error){
-            throw new Error(`error: ${error}`)
-        }
+//         } catch (error){
+//             throw new Error(`error: ${error}`)
+//         }
 
-    }
+//     }
 
-}
+// }
 

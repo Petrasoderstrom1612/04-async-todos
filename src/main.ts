@@ -42,17 +42,19 @@ const renderTodos = () => {
 
 todosEl.addEventListener("click", async (e) => { //no need to declare e, typescript deducts it from "click"
 	const target = e.target as HTMLElement //I do not know which html element but I am sure it is html el
-    const oneObjId = Number(target.closest("li")?.dataset.todoId);
+    const clickedId = Number(target.closest("li")?.dataset.todoId);
 
-    if(!oneObjId) return //if I had several li's
-    console.log("id from the click", oneObjId)
+    if(!clickedId) return //if I had several li's
+    console.log("id from the click", clickedId)
+	const clickedTodo = todos.find((todo) => todo.id === clickedId)
+	if(!clickedTodo) return 
 
 	if (target.dataset.action === "delete") {
-		await deleteTodo(oneObjId);
+		await deleteTodo(clickedId);
 	}
+
 	if (target.classList.contains("checkbox")) {
-		const completed = (target as HTMLInputElement).checked
-		await updateTodo(oneObjId, {completed});
+		await updateTodo(clickedId, {completed : !clickedTodo.completed});
 	}
 	if (target.dataset.action === "edit") {
 		const titleEl = document.querySelector(".todo-title") as HTMLElement;
@@ -60,7 +62,7 @@ todosEl.addEventListener("click", async (e) => { //no need to declare e, typescr
 		const newTitle = prompt("Edit title", currentTitle)
 
 		if (newTitle && newTitle !== ""){
-			await updateTodo(oneObjId, {title: newTitle});
+			await updateTodo(clickedId, {title: newTitle});
 		}
 	}
     await fetchTodosAndRender();
