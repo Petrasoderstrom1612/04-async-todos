@@ -1,6 +1,6 @@
 import type{ Todo, CreateTodoPayload} from "./Types"
 
-// import axios from "axios";
+import axios from "axios";
 
 
 console.log(import.meta.env.VITE_API_BASEURL) //when .env is created in the root - directly under src the .env the variables you add get added to the default existing ones (but for console.log VITE does not show DB_PASSWORD) !Also make sure .env is not in .gitignore for when you deploy to Netlify
@@ -65,26 +65,34 @@ export const saveTodos = async (newTodo: CreateTodoPayload) => {
 //     if(e.document.target)
 // }
 
-export const deleteTodo = async(oneObjId: string) => {
-    try {
-        const res = await fetch(`${BASE_URL}/todos/${oneObjId}`,{
-            method: "DELETE",
-            headers: { "Content-Type": "application/json" },
-        })
+// export const deleteTodo = async(oneObjId: string) => {
+//     try {
+//         const res = await fetch(`${BASE_URL}/todos/${oneObjId}`,{
+//             method: "DELETE",
+//             headers: { "Content-Type": "application/json" },
+//         })
         
-        if (!res.ok) {
-            throw new Error(`HTTP error! status: ${res.status}`);
-    }
+//         if (!res.ok) {
+//             throw new Error(`HTTP error! status: ${res.status}`);
+//     }
     
-    console.log("deleted item with id: ", oneObjId)
+//     console.log("deleted item with id: ", oneObjId)
     
-} catch (error){
-    throw new Error(`error: ${error}`)
-}
+// } catch (error){
+//     throw new Error(`error: ${error}`)
+// }
+
+// }
+
+export const deleteTodo = async(oneObjId: number) => {
+    const res = await axios.delete(`${BASE_URL}/todos/${oneObjId}`)
+    console.log("AXIOS GET DATA:", res.data);
+    return true;
 
 }
 
-const fetchOneTodo = async (oneObjId: string) => {
+
+const fetchOneTodo = async (oneObjId: number) => {
     try {
     const res = await fetch(`${BASE_URL}/todos/${oneObjId}`) //denna startar hämtningen och ger mig ett löfte om att återkomma med en respons(uppfyld eller bruten)
 
@@ -102,7 +110,7 @@ const fetchOneTodo = async (oneObjId: string) => {
 
 }
 
-export const updateTodo = async(oneObjId: string, updates: Partial<Todo>) => {
+export const updateTodo = async(oneObjId: number, updates: Partial<Todo>) => {
 
     if(oneObjId){
         const editedTodo = await fetchOneTodo(oneObjId)

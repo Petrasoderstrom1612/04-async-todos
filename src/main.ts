@@ -30,8 +30,8 @@ const renderTodos = () => {
 					<span class="todo-title">${todo.title}</span>
 				</span>
 				<span class="todo-actions">
-					<button class="btn btn-warning">Edit</button>
-					<button class="btn btn-danger delete-btn">Delete</button>
+					<button class="btn btn-warning edit-btn" data-action="edit">Edit</button>
+					<button class="btn btn-danger delete-btn" data-action="delete">Delete</button>
 				</span>
 			</li>`;
 		})
@@ -40,23 +40,23 @@ const renderTodos = () => {
 
 //List for new todo form being submitted
 
-todosEl.addEventListener("click", async (e) => {
-	const target = e.target as HTMLElement
-    const li = target.closest("li")
-    if(!li) return; //if I click outside of the list
-    const oneObjId = li.dataset.todoId as string
+todosEl.addEventListener("click", async (e) => { //no need to declare e, typescript deducts it from "click"
+	const target = e.target as HTMLElement //I do not know which html element but I am sure it is html el
+    const oneObjId = Number(target.closest("li")?.dataset.todoId);
+    // if(!li) return; //if I click outside of the list
+    // const oneObjId = li.dataset.todoId as number
     if(!oneObjId) return //if I had several li's
     console.log("id from the click", oneObjId)
 
-	if (target.classList.contains("btn-danger")) {
+	if (target.dataset.action === "delete") {
 		await deleteTodo(oneObjId);
 	}
 	if (target.classList.contains("checkbox")) {
 		const completed = (target as HTMLInputElement).checked
 		await updateTodo(oneObjId, {completed});
 	}
-	if (target.classList.contains("btn-warning")) {
-		const titleEl = li.querySelector(".todo-title") as HTMLElement;
+	if (target.dataset.action === "edit") {
+		const titleEl = document.querySelector(".todo-title") as HTMLElement;
 		const currentTitle = titleEl.textContent;
 		const newTitle = prompt("Edit title", currentTitle)
 
