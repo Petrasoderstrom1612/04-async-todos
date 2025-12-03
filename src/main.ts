@@ -56,7 +56,7 @@ todosEl.addEventListener("click", async (e) => {
 		await updateTodo(oneObjId, {completed});
 	}
 	if (target.classList.contains("btn-warning")) {
-		const titleEl = li.querySelector(".todo-title") as HTMLLIElement;
+		const titleEl = li.querySelector(".todo-title") as HTMLElement;
 		const currentTitle = titleEl.textContent;
 		const newTitle = prompt("Edit title", currentTitle)
 
