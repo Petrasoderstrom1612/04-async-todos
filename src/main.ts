@@ -1,7 +1,6 @@
 import "./assets/scss/app.scss";
-import {fetchTodos} from "./services/TodosApi";
-import type {Todo } from "./services/Types";
-import {todos} from "./services/TodosApi";
+import {fetchTodos, saveTodos} from "./services/TodosApi";
+import type{ Todo} from "./services/Types"
 
 //DOM references
 const todosEl = document.querySelector<HTMLUListElement>("#todos")!;
@@ -12,26 +11,10 @@ console.log("Environment variables:", import.meta.env);
 const BASE_URL = import.meta.env.BASE_URL;
 console.log(BASE_URL)
 
-
-const saveTodos = async (newTodo: Todo) => {
-		try {
-		const res = await fetch("http://localhost:3000/todos",{
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify(newTodo)
-		})
-		const data = await res.json() as Todo[];
-		console.log("data", data)
-		return data
-
-	} catch (error){
-		throw new Error(`error: ${error}`)
-	}
-	
-}
+export let todos: Todo[] = []; //you have to declare it locally so you can control it
 
 const fetchTodosAndRender = async () => {
-	await fetchTodos()
+	todos = await fetchTodos() //now giving it value(otherwise you need to redeclare this todos = data in axios)
 	renderTodos()
 }
 
@@ -40,8 +23,8 @@ const fetchTodosAndRender = async () => {
 //Render todos to DOM
 const renderTodos = () => {
 	todosEl.innerHTML = todos
-		.map(todo => {
-			return `<li class="list-group-item d-flex justify-content-between align-items-center">
+		.map(todo => {																					//dataset todoId
+			return `<li class="list-group-item d-flex justify-content-between align-items-center" data-todo-id="${todo.id}">
 				<span class="todo-item">
 					<input type="checkbox" class="me-2" ${todo.completed ? "checked" : ""} />
 					<span class="todo-title">${todo.title}</span>
@@ -69,21 +52,27 @@ newTodoFormEl.addEventListener("submit", async (e) => {
 	}
 
 	// Find the highest ID among all todos
-	const maxId = Math.max(0, ...todos.map(todo => todo.id) );
+	//const maxId = Math.max(0, ...todos.map(todo => todo.id) ); //no longer control over this
 
-	const newTodo: Todo = {
-		id: maxId + 1,
+	// const newTodo: Todo = {
+	// 	id: maxId + 1,
+	// 	title: newTodoTitle,
+	// 	completed: false,
+	// }
+
+	await saveTodos({ //no need to declare again as it has the same form as declared in types 🐫
 		title: newTodoTitle,
 		completed: false,
-	}
+	})
 
 	// PUSH! 🫸🏻
-	todos.push(newTodo);
-	console.log(todos)
+	// todos.push(newTodo);
+	// console.log(todos)
 
-	// Save todos 🏊‍♀️🛟
-	await saveTodos(newTodo);
+	// // Save todos 🏊‍♀️🛟
+	// await saveTodos(newTodo);
 
+	// saveTodos(newTodo);
 	// Re-render todos
 	fetchTodosAndRender();
 
