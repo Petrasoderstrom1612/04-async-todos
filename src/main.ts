@@ -41,12 +41,18 @@ const renderTodos = () => {
 //List for new todo form being submitted
 
 todosEl.addEventListener("click", async (e) => {
-	const eTarget = e.target as HTMLElement
-	if (eTarget.classList.contains("btn-danger")) {
-		await deleteTodo(e);
+	const target = e.target as HTMLElement
+    const li = target.closest("li")
+    if(!li) return; //if I click outside of the list
+    const oneObjId = li.dataset.todoId as string
+    if(!oneObjId) return //if I had several li's
+    console.log("id from the click", oneObjId)
+
+	if (target.classList.contains("btn-danger")) {
+		await deleteTodo(oneObjId);
 	}
-	if (eTarget.classList.contains("checkbox")) {
-		await updateTodo(e);
+	if (target.classList.contains("checkbox")) {
+		await updateTodo(oneObjId);
 	}
     await fetchTodosAndRender();
 });

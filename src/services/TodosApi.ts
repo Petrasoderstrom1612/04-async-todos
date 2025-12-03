@@ -65,16 +65,7 @@ export const saveTodos = async (newTodo: CreateTodoPayload) => {
 //     if(e.document.target)
 // }
 
-export const deleteTodo = async(event: MouseEvent) => {
-    const target = event.target as HTMLElement
-    const li = target.closest("li")
-    if(!li) return;
-
-    console.log("id from the click", li.dataset.todoId)
-    const oneObjId = li.dataset.todoId
-    if(!li.dataset.todoId) return //if I had several li's
-    
-    
+export const deleteTodo = async(oneObjId: string) => {
     try {
         const res = await fetch(`${BASE_URL}/todos/${oneObjId}`,{
             method: "DELETE",
@@ -104,8 +95,6 @@ const fetchOneTodo = async (oneObjId: string) => {
     const data = await res.json() as Todo; //needed as Typescript does not read 5 when fetching, it will assign any
     console.log("data", data)
 
-
-
     return data
 	} catch (error){
 		throw Error(`error: ${error}`)
@@ -113,14 +102,7 @@ const fetchOneTodo = async (oneObjId: string) => {
 
 }
 
-export const updateTodo = async(event: MouseEvent) => {
-    const target = event.target as HTMLElement
-    const li = target.closest("li")
-    if(!li) return;
-    
-    console.log("id from the click", li.dataset.todoId)
-    const oneObjId = li.dataset.todoId
-    if(!li.dataset.todoId) return //if I had several li's
+export const updateTodo = async(oneObjId: string) => {
 
     if(oneObjId){
         const editedTodo = await fetchOneTodo(oneObjId)
