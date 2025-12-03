@@ -57,34 +57,13 @@ newTodoFormEl.addEventListener("submit", async (e) => {
 		return;
 	}
 
-	// Find the highest ID among all todos
-	//const maxId = Math.max(0, ...todos.map(todo => todo.id) ); //no longer control over this
-
-	// const newTodo: Todo = {
-	// 	id: maxId + 1,
-	// 	title: newTodoTitle,
-	// 	completed: false,
-	// }
-
 	await saveTodos({ //no need to declare again as it has the same form as declared in types 🐫
 		title: newTodoTitle,
 		completed: false,
 	})
 
-	// PUSH! 🫸🏻
-	// todos.push(newTodo);
-	// console.log(todos)
-
-	// // Save todos 🏊‍♀️🛟
-	// await saveTodos(newTodo);
-
-	// saveTodos(newTodo);
-	// Re-render todos
 	fetchTodosAndRender();
-
-	// Clear input field
 	newTodoTitleEl.value = "";
-
 	console.log("Great success!", todos);
 });
 
