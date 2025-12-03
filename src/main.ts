@@ -43,8 +43,7 @@ const renderTodos = () => {
 todosEl.addEventListener("click", async (e) => { //no need to declare e, typescript deducts it from "click"
 	const target = e.target as HTMLElement //I do not know which html element but I am sure it is html el
     const oneObjId = Number(target.closest("li")?.dataset.todoId);
-    // if(!li) return; //if I click outside of the list
-    // const oneObjId = li.dataset.todoId as number
+
     if(!oneObjId) return //if I had several li's
     console.log("id from the click", oneObjId)
 
