@@ -1,14 +1,9 @@
 {
   "todos": [
     {
-      "title": "jjj",
-      "completed": false,
+      "title": "123",
+      "completed": true,
       "id": 1
-    },
-    {
-      "title": "eee",
-      "completed": false,
-      "id": 2
     },
     {
       "title": "desws",

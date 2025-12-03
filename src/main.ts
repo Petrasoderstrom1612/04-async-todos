@@ -52,7 +52,17 @@ todosEl.addEventListener("click", async (e) => {
 		await deleteTodo(oneObjId);
 	}
 	if (target.classList.contains("checkbox")) {
-		await updateTodo(oneObjId);
+		const completed = (target as HTMLInputElement).checked
+		await updateTodo(oneObjId, {completed});
+	}
+	if (target.classList.contains("btn-warning")) {
+		const titleEl = li.querySelector(".todo-title") as HTMLLIElement;
+		const currentTitle = titleEl.textContent;
+		const newTitle = prompt("Edit title", currentTitle)
+
+		if (newTitle && newTitle !== ""){
+			await updateTodo(oneObjId, {title: newTitle});
+		}
 	}
     await fetchTodosAndRender();
 });

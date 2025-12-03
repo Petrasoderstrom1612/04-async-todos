@@ -102,7 +102,7 @@ const fetchOneTodo = async (oneObjId: string) => {
 
 }
 
-export const updateTodo = async(oneObjId: string) => {
+export const updateTodo = async(oneObjId: string, updates: Partial<Todo>) => {
 
     if(oneObjId){
         const editedTodo = await fetchOneTodo(oneObjId)
@@ -111,7 +111,7 @@ export const updateTodo = async(oneObjId: string) => {
         const res = await fetch(`${BASE_URL}/todos/${oneObjId}`,{
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({completed: !editedTodo.completed})
+            body: JSON.stringify(updates)
         })
         
         if (!res.ok) {
