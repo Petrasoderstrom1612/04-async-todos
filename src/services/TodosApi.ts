@@ -1,15 +1,26 @@
 import type{ Todo, CreateTodoPayload, UpdateTodoPayload} from "./Types"
 
 import axios from "axios";
+import { AxiosError } from 'axios';
 
 
 console.log(import.meta.env.VITE_API_BASEURL) //when .env is created in the root - directly under src the .env the variables you add get added to the default existing ones (but for console.log VITE does not show DB_PASSWORD) !Also make sure .env is not in .gitignore for when you deploy to Netlify
 const BASE_URL = import.meta.env.VITE_API_BASEURL
 //    ^?
 
+const handleError = (error: unknown) => {
+    if(error instanceof AxiosError){
+    alert("Something went wrong" + error.message)
+    console.log(error)
+    throw Error(`error message: ${error.message}`)
+    } else{
+        alert("Something unexpected happened")
+        console.log("Something unexpected happened")
+    }
+}
 
 
-export const fetchTodos = async () => {
+export const fetchTodos = async (): Promise<Todo[]> => {
 	try {
 		const res = await fetch(`${BASE_URL}/todos`) //denna startar hämtningen och ger mig ett löfte om att återkomma med en respons(uppfyld eller bruten)
 
@@ -24,8 +35,10 @@ export const fetchTodos = async () => {
 
 		return data
 	} catch (error){
-		throw Error(`error: ${error}`)
+		handleError(error)
+        return[]
 	}	
+
 }
 
 // export const fetchTodos = async () => { //the same as the fetch above, axios takes care of content type (JSON) but also if res is not ok
@@ -51,7 +64,7 @@ export const saveTodos = async (newTodo: CreateTodoPayload) => {
     return data
 
     } catch (error){
-        throw new Error(`error: ${error}`)
+    handleError(error)
     }
     
 }
@@ -85,9 +98,14 @@ export const saveTodos = async (newTodo: CreateTodoPayload) => {
 // }
 
 export const deleteTodo = async(oneObjId: number) => {
+    try{
     const res = await axios.delete(`${BASE_URL}/todos/${oneObjId}`)
     console.log("AXIOS GET DATA:", res.data);
     return true;
+    }
+    catch(error){
+        handleError(error)
+    }
 
 }
 
@@ -111,9 +129,14 @@ export const deleteTodo = async(oneObjId: number) => {
 // }
 
 export const updateTodo = async(oneObjId: number, updates: UpdateTodoPayload) => {
+    try{
     const res = await axios.patch<Todo>(`${BASE_URL}/todos/${oneObjId}`, updates) //<Todo> ensures your promise is not any
     console.log("AXIOS PATCH DATA:", res.data);
     return res.data;
+    }
+    catch(error){
+        handleError(error)
+    }
 }
 
 // export const updateTodo = async(oneObjId: number, updates: UpdateTodoPayload) => {
