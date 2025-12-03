@@ -1,4 +1,5 @@
 import type{ Todo, CreateTodoPayload} from "./Types"
+
 // import axios from "axios";
 
 
@@ -59,3 +60,36 @@ export const saveTodos = async (newTodo: CreateTodoPayload) => {
 //     const res = await axios.post<Todo[]>(`${BASE_URL}/todos`,newTodo)
 //     return res.data
 // }
+
+// export const deleteTodo = async (e, deletedTodo: Todo) => {
+//     if(e.document.target)
+// }
+
+export const deleteTodo = async(event: MouseEvent) => {
+    const target = event.target as HTMLElement
+    const li = target.closest("li")
+    if(!li) return;
+
+    console.log(li.dataset.todoId)
+    const oneObjId = li.dataset.todoId
+
+
+    try {
+    const res = await fetch(`${BASE_URL}/todos/${oneObjId}`,{
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+    })
+    
+    if (!res.ok) {
+    throw new Error(`HTTP error! status: ${res.status}`);
+    }
+
+    console.log("deleted item with id: ", oneObjId)
+
+    } catch (error){
+        throw new Error(`error: ${error}`)
+    }
+
+}
+
+

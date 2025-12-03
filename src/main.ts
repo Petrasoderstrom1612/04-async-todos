@@ -1,11 +1,12 @@
 import "./assets/scss/app.scss";
-import {fetchTodos, saveTodos} from "./services/TodosApi";
+import {fetchTodos, saveTodos, deleteTodo} from "./services/TodosApi";
 import type{ Todo} from "./services/Types"
 
 //DOM references
 const todosEl = document.querySelector<HTMLUListElement>("#todos")!;
 const newTodoFormEl = document.querySelector<HTMLFormElement>("#new-todo-form")!;
 const newTodoTitleEl = document.querySelector<HTMLInputElement>("#new-todo-title")!;
+
 
 console.log("Environment variables:", import.meta.env);
 const BASE_URL = import.meta.env.BASE_URL;
@@ -19,7 +20,6 @@ const fetchTodosAndRender = async () => {
 }
 
 
-
 //Render todos to DOM
 const renderTodos = () => {
 	todosEl.innerHTML = todos
@@ -31,7 +31,7 @@ const renderTodos = () => {
 				</span>
 				<span class="todo-actions">
 					<button class="btn btn-warning">Edit</button>
-					<button class="btn btn-danger">Delete</button>
+					<button class="btn btn-danger delete-btn">Delete</button>
 				</span>
 			</li>`;
 		})
@@ -39,6 +39,12 @@ const renderTodos = () => {
 }
 
 //List for new todo form being submitted
+
+todosEl.addEventListener("click", async (e) => {
+    await deleteTodo(e);
+    await fetchTodosAndRender();
+});
+
 
 newTodoFormEl.addEventListener("submit", async (e) => {
 	e.preventDefault();

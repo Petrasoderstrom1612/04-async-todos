@@ -1,49 +1,9 @@
 {
   "todos": [
     {
-      "id": 2,
-      "title": "Task 2",
-      "completed": true
-    },
-    {
-      "id": 3,
-      "title": "Have fun making promises",
-      "completed": false
-    },
-    {
-      "id": 4,
-      "title": "Task 4",
-      "completed": true
-    },
-    {
-      "id": 1,
-      "title": "Task 1",
-      "completed": true
-    },
-    {
-      "id": 5,
-      "title": "Task after recoding first lecture part recording",
-      "completed": false
-    },
-    {
-      "title": "test after omit",
+      "title": "bbb",
       "completed": false,
-      "id": 6
-    },
-    {
-      "title": "ddddd",
-      "completed": false,
-      "id": 7
-    },
-    {
-      "title": "last try",
-      "completed": false,
-      "id": 8
-    },
-    {
-      "title": "one more",
-      "completed": false,
-      "id": 9
+      "id": 10
     }
   ]
 }
