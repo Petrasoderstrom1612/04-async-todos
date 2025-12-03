@@ -73,24 +73,78 @@ export const deleteTodo = async(event: MouseEvent) => {
     console.log("id from the click", li.dataset.todoId)
     const oneObjId = li.dataset.todoId
     if(!li.dataset.todoId) return //if I had several li's
-
-
-    try {
-    const res = await fetch(`${BASE_URL}/todos/${oneObjId}`,{
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-    })
     
+    
+    try {
+        const res = await fetch(`${BASE_URL}/todos/${oneObjId}`,{
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+        })
+        
+        if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`);
+    }
+    
+    console.log("deleted item with id: ", oneObjId)
+    
+} catch (error){
+    throw new Error(`error: ${error}`)
+}
+
+}
+
+const fetchOneTodo = async (oneObjId: string) => {
+    try {
+    const res = await fetch(`${BASE_URL}/todos/${oneObjId}`) //denna startar hämtningen och ger mig ett löfte om att återkomma med en respons(uppfyld eller bruten)
+
     if (!res.ok) {
     throw new Error(`HTTP error! status: ${res.status}`);
     }
 
-    console.log("deleted item with id: ", oneObjId)
+    const data = await res.json() as Todo; //needed as Typescript does not read 5 when fetching, it will assign any
+    console.log("data", data)
 
-    } catch (error){
-        throw new Error(`error: ${error}`)
-    }
+
+
+    return data
+	} catch (error){
+		throw Error(`error: ${error}`)
+	}	
 
 }
 
+export const updateTodo = async(event: MouseEvent) => {
+    const target = event.target as HTMLElement
+    const li = target.closest("li")
+    if(!li) return;
+    
+    console.log("id from the click", li.dataset.todoId)
+    const oneObjId = li.dataset.todoId
+    if(!li.dataset.todoId) return //if I had several li's
+
+    if(oneObjId){
+        const editedTodo = await fetchOneTodo(oneObjId)
+        console.log("editedTodo", editedTodo)
+        try {
+        const res = await fetch(`${BASE_URL}/todos/${oneObjId}`,{
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({completed: !editedTodo.completed})
+        })
+        
+        if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+        }
+    
+        const data = await res.json() as Todo[];
+        console.log("edited data", data)
+        return data
+    
+        } catch (error){
+            throw new Error(`error: ${error}`)
+        }
+
+    }
+
+}
 

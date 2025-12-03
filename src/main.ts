@@ -1,5 +1,5 @@
 import "./assets/scss/app.scss";
-import {fetchTodos, saveTodos, deleteTodo} from "./services/TodosApi";
+import {fetchTodos, saveTodos, deleteTodo, updateTodo} from "./services/TodosApi";
 import type{ Todo} from "./services/Types"
 
 //DOM references
@@ -26,12 +26,12 @@ const renderTodos = () => {
 		.map(todo => {																					//dataset todoId
 			return `<li class="list-group-item d-flex justify-content-between align-items-center" data-todo-id="${todo.id}">
 				<span class="todo-item">
-					<input type="checkbox" class="me-2" ${todo.completed ? "checked" : ""} />
+					<input type="checkbox" class="me-2 checkbox" ${todo.completed ? "checked" : ""} />
 					<span class="todo-title">${todo.title}</span>
 				</span>
 				<span class="todo-actions">
 					<button class="btn btn-warning">Edit</button>
-					<button class="btn btn-danger">Delete</button>
+					<button class="btn btn-danger delete-btn">Delete</button>
 				</span>
 			</li>`;
 		})
@@ -41,7 +41,13 @@ const renderTodos = () => {
 //List for new todo form being submitted
 
 todosEl.addEventListener("click", async (e) => {
-    await deleteTodo(e);
+	const eTarget = e.target as HTMLElement
+	if (eTarget.classList.contains("btn-danger")) {
+		await deleteTodo(e);
+	}
+	if (eTarget.classList.contains("checkbox")) {
+		await updateTodo(e);
+	}
     await fetchTodosAndRender();
 });
 
